@@ -1,34 +1,43 @@
-import { auth, db } from "./firebase.js";  // Stelle sicher, dass du die richtigen Firebase-Dienste importierst
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";  // Importiere onAuthStateChanged
+// Firebase initialisieren (nur wenn Firebase noch nicht initialisiert wurde)
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 
-// Wenn der Benutzer eingeloggt ist, werden Profile geladen
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // Benutzer ist eingeloggt, Profile anzeigen
-        loadProfiles();
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+const profileForm = document.getElementById('profile-form');
+const user = auth.currentUser;
+
+if (!user) {
+    window.location.href = 'login.html'; // Falls nicht eingeloggt, zurück zum Login
+}
+
+profileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const age = document.getElementById('age').value;
+    const className = document.getElementById('class').value;
+    const imageFile = document.getElementById('image').files[0];
+
+    if (name && age && className && imageFile) {
+        // Bild hochladen
+        const imageRef = storage.ref(`profile_pics/${user.uid}`);
+        await imageRef.put(imageFile);
+        const imageUrl = await imageRef.getDownloadURL();
+
+        // Profil speichern
+        await db.collection('users').doc(user.uid).set({
+            name,
+            age,
+            class: className,
+            imageUrl
+        });
+
+        alert('Profil gespeichert!');
     } else {
-        // Benutzer ist nicht eingeloggt, zeige das Login-Formular
-        document.getElementById("login-container").classList.remove("hidden");
-        document.getElementById("profile-container").classList.add("hidden");
+        alert('Bitte alle Felder ausfüllen.');
     }
 });
-
-// Funktion zum Laden der Profile
-async function loadProfiles() {
-    const profilesRef = collection(db, "users");
-    const querySnapshot = await getDocs(profilesRef);
-    const profileContainer = document.getElementById("profile-container");
-    profileContainer.innerHTML = "";
-
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const profileHTML = `
-            <div class="p-4 border rounded-lg">
-                <img src="${data.imageUrl}" class="w-32 h-32 object-cover rounded-full">
-                <h3 class="text-lg font-bold">${data.name}, ${data.age}</h3>
-                <p>Klasse: ${data.class}</p>
-            </div>
-        `;
-        profileContainer.innerHTML += profileHTML;
-    });
-}
