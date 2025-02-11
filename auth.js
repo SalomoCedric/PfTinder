@@ -1,46 +1,30 @@
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { firebaseConfig } from "./firebase-config.js"; // firebaseConfig korrekt importieren
+// Firebase Konfiguration
+const firebaseConfig = {
+  apiKey: "AIzaSyBX_GqLCg1yOD1aPjxHZ1bQgdTQ5B7trv8",
+  authDomain: "pftinder-79946.firebaseapp.com",
+  projectId: "pftinder-79946",
+  storageBucket: "pftinder-79946.firebasestorage.app",
+  messagingSenderId: "165850597415",
+  appId: "1:165850597415:web:84e698173e2f983c4d6602"
+};
 
-const auth = getAuth();  // Firebase-Auth initialisieren
+// Firebase initialisieren
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
 
-// Überprüfen, ob der Benutzer eingeloggt ist
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // Benutzer ist eingeloggt, zeige Profile und andere Daten
-        loadProfiles();
-    } else {
-        // Benutzer ist nicht eingeloggt, zeige das Login-Formular
-        document.getElementById("login-container").classList.remove("hidden");
-        document.getElementById("profile-container").classList.add("hidden");
-    }
-});
-
-// Login Funktion
-const loginBtn = document.getElementById('login-btn');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-
-loginBtn.addEventListener('click', async () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    if (!email || !password) {
-        alert('Bitte alle Felder ausfüllen!');
-        return;
-    }
+// Login-Funktion
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        alert('Erfolgreich eingeloggt');
+        await auth.signInWithEmailAndPassword(email, password);
+        window.location.href = 'profile.html'; // Nach Login auf die Profilseite
     } catch (error) {
-        alert('Fehler beim Anmelden: ' + error.message);
+        alert(error.message);
     }
-});
-
-// Logout Funktion
-const logoutBtn = document.getElementById('logout-btn');
-logoutBtn.addEventListener('click', async () => {
-    await signOut(auth);
-    alert("Erfolgreich abgemeldet");
-    location.reload();  // Seite neu laden
 });
