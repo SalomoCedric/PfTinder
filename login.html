@@ -4,19 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+    <script type="module">
+        // Firebase-Importe direkt im HTML-Dokument
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+
+        // Deine Firebase-Konfiguration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Firebase initialisieren
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        
+        // Beispiel für das Login-System
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log("Benutzer eingeloggt:", userCredential);
+                // Weiterleitung oder Profil-Logik
+            } catch (error) {
+                console.error("Fehler beim Einloggen:", error);
+            }
+        });
+    </script>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="login-form">
-            <input type="email" id="email" placeholder="E-Mail" required>
-            <input type="password" id="password" placeholder="Passwort" required>
-            <button type="submit">Login</button>
-        </form>
-        <p>Kein Konto? <a href="register.html">Jetzt registrieren</a></p>
-    </div>
-
-    <script src="auth.js"></script>
+    <h1>Login</h1>
+    <form id="login-form">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Passwort" required>
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>
