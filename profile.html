@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil erstellen</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Profil</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form id="profile-form">
-        <input type="text" id="name" placeholder="Name" required class="p-2">
-        <input type="number" id="age" placeholder="Alter" required class="p-2">
-        <input type="text" id="class" placeholder="Klasse" required class="p-2">
-        <input type="file" id="image" accept="image/*" required class="p-2">
-        <button type="button" id="save-profile" class="bg-green-500 p-2 text-white">Profil speichern</button>
-    </form>
+    <div class="profile-container">
+        <h2>Willkommen, <span id="profile-name"></span></h2>
+        <p>Alter: <span id="profile-age"></span></p>
+        <p>Klasse: <span id="profile-class"></span></p>
+        <img id="profile-image" src="" alt="Profilbild">
+        <button id="logout">Logout</button>
+    </div>
 
     <script src="profile.js"></script>
 </body>
