@@ -10,14 +10,15 @@ import \{ getAuth, GoogleAuthProvider, signInWithPopup \} from "https://www.gsta
 import \{ getFirestore, doc, setDoc \} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";\
 \
 // Firebase config\
-const firebaseConfig = \{\
-    apiKey: "YOUR_API_KEY",\
-    authDomain: "YOUR_AUTH_DOMAIN",\
-    projectId: "YOUR_PROJECT_ID",\
-    storageBucket: "YOUR_STORAGE_BUCKET",\
-    messagingSenderId: "YOUR_SENDER_ID",\
-    appId: "YOUR_APP_ID"\
-\};\
+const firebaseConfig = {
+  apiKey: "AIzaSyBX_GqLCg1yOD1aPjxHZ1bQgdTQ5B7trv8",
+  authDomain: "pftinder-79946.firebaseapp.com",
+  projectId: "pftinder-79946",
+  storageBucket: "pftinder-79946.firebasestorage.app",
+  messagingSenderId: "165850597415",
+  appId: "1:165850597415:web:84e698173e2f983c4d6602"
+};
+
 \
 // Initialize Firebase\
 const app = initializeApp(firebaseConfig);\
