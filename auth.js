@@ -1,10 +1,21 @@
-// auth.js
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { firebaseConfig } from "./firebase-config.js"; // firebaseConfig wird korrekt importiert
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { firebaseConfig } from "./firebase-config.js"; // firebaseConfig korrekt importieren
 
-const auth = getAuth();  // Auth-Dienst initialisieren
+const auth = getAuth();  // Firebase-Auth initialisieren
 
-// Anmelde- und Registrierungshandling
+// Überprüfen, ob der Benutzer eingeloggt ist
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Benutzer ist eingeloggt, zeige Profile und andere Daten
+        loadProfiles();
+    } else {
+        // Benutzer ist nicht eingeloggt, zeige das Login-Formular
+        document.getElementById("login-container").classList.remove("hidden");
+        document.getElementById("profile-container").classList.add("hidden");
+    }
+});
+
+// Login Funktion
 const loginBtn = document.getElementById('login-btn');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
@@ -26,21 +37,10 @@ loginBtn.addEventListener('click', async () => {
     }
 });
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // Benutzer ist eingeloggt, zeige das Profil
-        loadProfiles();
-    } else {
-        // Benutzer ist nicht eingeloggt, zeige Login-Formular
-        document.getElementById("login-container").classList.remove("hidden");
-        document.getElementById("profile-container").classList.add("hidden");
-    }
-});
-
-// Logout
+// Logout Funktion
 const logoutBtn = document.getElementById('logout-btn');
 logoutBtn.addEventListener('click', async () => {
     await signOut(auth);
     alert("Erfolgreich abgemeldet");
-    location.reload();  // Seite neu laden, um das Login-Formular zu zeigen
+    location.reload();  // Seite neu laden
 });
