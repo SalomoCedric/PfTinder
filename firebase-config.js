@@ -1,15 +1,8 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2820
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-\f0\fs24 \cf0 import \{ initializeApp \} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";\
-import \{ getAuth, GoogleAuthProvider, signInWithPopup \} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";\
-import \{ getFirestore, doc, setDoc \} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";\
-\
-// Firebase config\
+// Firebase Konfiguration (ersetze mit deinen echten Daten)
 const firebaseConfig = {
   apiKey: "AIzaSyBX_GqLCg1yOD1aPjxHZ1bQgdTQ5B7trv8",
   authDomain: "pftinder-79946.firebaseapp.com",
@@ -19,28 +12,52 @@ const firebaseConfig = {
   appId: "1:165850597415:web:84e698173e2f983c4d6602"
 };
 
-\
-// Initialize Firebase\
-const app = initializeApp(firebaseConfig);\
-const auth = getAuth(app);\
-const db = getFirestore(app);\
-\
-// Google Login\
-async function login() \{\
-    const provider = new GoogleAuthProvider();\
-    const result = await signInWithPopup(auth, provider);\
-    const user = result.user;\
-\
-    // Save user data to Firestore\
-    await setDoc(doc(db, "users", user.uid), \{\
-        name: user.displayName,\
-        email: user.email,\
-        photo: user.photoURL\
-    \});\
-\
-    alert(`Logged in as $\{user.displayName\}`);\
-\}\
-\
-document.getElementById("login-btn").addEventListener("click", login);\
-export \{ auth, db \};\
+// Firebase initialisieren
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Registrierung mit E-Mail und Passwort
+async function register() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // Benutzer in Firestore speichern
+        await setDoc(doc(db, "users", user.uid), {
+            email: user.email
+        });
+
+        alert("Registrierung erfolgreich!");
+    } catch (error) {
+        alert(error.message);
+    }
 }
+
+// Login mit E-Mail und Passwort
+async function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Login erfolgreich!");
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+// Logout-Funktion
+function logout() {
+    signOut(auth).then(() => {
+        alert("Abgemeldet!");
+    });
+}
+
+// Event Listener für Buttons
+document.getElementById("register-btn").addEventListener("click", register);
+document.getElementById("login-btn").addEventListener("click", login);
+document.getElementById("logout-btn").addEventListener("click", logout);
