@@ -11,15 +11,39 @@
 
     <h1 class="text-3xl font-bold my-4">Matching App</h1>
 
-    <div class="bg-white p-4 rounded-lg shadow-lg">
-        <input type="email" id="email" placeholder="E-Mail" class="border p-2 rounded w-full mb-2">
-        <input type="password" id="password" placeholder="Passwort" class="border p-2 rounded w-full mb-2">
-        <button id="register-btn" class="bg-green-500 text-white px-4 py-2 rounded w-full">Registrieren</button>
-        <button id="login-btn" class="bg-blue-500 text-white px-4 py-2 rounded w-full mt-2">Login</button>
-        <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded w-full mt-2">Logout</button>
+    <!-- Tabs -->
+    <div class="flex">
+        <button onclick="showTab('profile-tab')" class="bg-blue-500 text-white px-4 py-2 rounded">Profil</button>
+        <button onclick="showTab('match-tab')" class="bg-green-500 text-white px-4 py-2 rounded ml-2">Smash/Pass</button>
     </div>
 
-    <script type="module" src="firebase-config.js"></script>
+    <!-- Profil-Bereich -->
+    <div id="profile-tab" class="tab p-4 bg-white rounded-lg shadow-lg mt-4">
+        <h2 class="text-xl font-bold">Dein Profil</h2>
+        <input type="text" id="name" placeholder="Name" class="border p-2 rounded w-full mb-2">
+        <input type="number" id="age" placeholder="Alter" class="border p-2 rounded w-full mb-2">
+        <input type="text" id="class" placeholder="Klasse" class="border p-2 rounded w-full mb-2">
+        <input type="file" id="image" class="border p-2 rounded w-full mb-2">
+        <button id="save-profile" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Speichern</button>
+    </div>
+
+    <!-- Smash/Pass-Bereich -->
+    <div id="match-tab" class="tab hidden p-4 bg-white rounded-lg shadow-lg mt-4">
+        <h2 class="text-xl font-bold">Smash oder Pass?</h2>
+        <div id="profile-container" class="mt-4"></div>
+        <button id="smash-btn" class="bg-green-500 text-white px-4 py-2 rounded w-1/2">Smash</button>
+        <button id="pass-btn" class="bg-red-500 text-white px-4 py-2 rounded w-1/2">Pass</button>
+    </div>
+
+    <script type="module" src="app.js"></script>
+
+    <script>
+        function showTab(tabId) {
+            document.getElementById("profile-tab").classList.add("hidden");
+            document.getElementById("match-tab").classList.add("hidden");
+            document.getElementById(tabId).classList.remove("hidden");
+        }
+    </script>
+
 </body>
 </html>
-
