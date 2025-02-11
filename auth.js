@@ -1,6 +1,8 @@
 // auth.js
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { auth } from "./firebase.js"; // Firebase Auth importieren
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { firebaseConfig } from "./firebase-config.js"; // firebaseConfig wird korrekt importiert
+
+const auth = getAuth();  // Auth-Dienst initialisieren
 
 // Anmelde- und Registrierungshandling
 const loginBtn = document.getElementById('login-btn');
