@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Matching</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Matching App</title>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <div id="profile-container"></div>
-    <button id="logout" class="bg-red-500 p-2 text-white">Logout</button>
-    
-    <script src="swipe.js"></script>
+    <!-- Dein Inhalt, z.B. ein Button für das Einloggen -->
+    <div id="login-container">
+        <button id="login-btn">Login</button>
+    </div>
+
+    <div id="profile-container" class="hidden">
+        <!-- Hier wird das Profil angezeigt -->
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="firebase.js"></script>
+    <script type="module" src="swipe.js"></script>
 </body>
 </html>
