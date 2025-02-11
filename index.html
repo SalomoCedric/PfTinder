@@ -1,49 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smash/Pass</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Social Matching</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+<body>
+    <div id="profile-container"></div>
+    <button id="logout" class="bg-red-500 p-2 text-white">Logout</button>
     
-    <h1 class="text-3xl font-bold my-4">Smash oder Pass</h1>
-
-    <button id="logout-btn" class="bg-red-500 text-white px-4 py-2 rounded w-full mt-2">Logout</button>
-
-    <script type="module">
-    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-    const auth = getAuth();
-
-    // Prüfe, ob ein User eingeloggt ist
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            console.log("Kein User eingeloggt! Weiterleitung zur Login-Seite...");
-            window.location.href = "login.html"; // Weiterleitung falls nicht eingeloggt
-        }
-    });
-
-    // Logout-Funktion
-    document.getElementById("logout-btn").addEventListener("click", async () => {
-        try {
-            await signOut(auth);
-            console.log("User erfolgreich ausgeloggt!");
-            window.location.href = "login.html"; // Zurück zum Login
-        } catch (error) {
-            console.error("Fehler beim Logout:", error);
-        }
-    });
-</script>
-
-
-        document.getElementById("logout-btn").addEventListener("click", async () => {
-            await signOut(auth);
-            window.location.href = "login.html";
-        });
-    </script>
-
+    <script src="swipe.js"></script>
 </body>
 </html>
