@@ -1,6 +1,6 @@
 // firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { firebaseConfig } from "./firebase-config.js"; // Hier wird firebaseConfig importiert
+import { firebaseConfig } from "./firebase-config.js"; // firebaseConfig aus der richtigen Datei importieren
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
