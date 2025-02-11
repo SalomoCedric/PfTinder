@@ -1,7 +1,8 @@
+// swipe.js
 import { auth, db } from "./firebase.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Profile zum Swipen laden
+// Profile laden
 async function loadProfiles() {
     const user = auth.currentUser;
     if (!user) return;
@@ -12,7 +13,7 @@ async function loadProfiles() {
     profileContainer.innerHTML = "";
 
     querySnapshot.forEach((doc) => {
-        if (doc.id !== user.uid) {  // Eigene Profile nicht anzeigen
+        if (doc.id !== user.uid) { // Eigene Profile nicht anzeigen
             const data = doc.data();
             const profileHTML = `
                 <div class="p-4 border rounded-lg">
@@ -37,7 +38,7 @@ async function loadProfiles() {
     });
 }
 
-// Swipen speichern (noch zu erweitern)
+// Swipen speichern
 async function handleSwipe(targetUserId, action) {
     console.log(`User swiped ${action} on ${targetUserId}`);
 }
@@ -47,6 +48,6 @@ auth.onAuthStateChanged((user) => {
     if (user) {
         loadProfiles();
     } else {
-        window.location.href = "login.html"; // Falls nicht eingeloggt, weiterleiten
+        window.location.href = "login.html"; // Zur Login-Seite weiterleiten
     }
 });
