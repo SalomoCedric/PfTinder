@@ -9,7 +9,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     const password = document.getElementById("password").value;
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "index.html"; // Weiterleitung
+        window.location.href = "index.html"; // Weiterleitung zur Hauptseite
     } catch (error) {
         alert("Fehler beim Anmelden: " + error.message);
     }
@@ -22,7 +22,7 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
     const password = document.getElementById("password").value;
     try {
         await createUserWithEmailAndPassword(auth, email, password);
-        window.location.href = "index.html"; // Weiterleitung
+        window.location.href = "index.html"; // Weiterleitung zur Hauptseite
     } catch (error) {
         alert("Fehler bei der Registrierung: " + error.message);
     }
