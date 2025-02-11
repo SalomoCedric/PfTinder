@@ -1,5 +1,6 @@
+// profile.js
 import { auth, db, storage } from "./firebase.js";
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 // Profil speichern
@@ -30,5 +31,5 @@ document.getElementById("save-profile").addEventListener("click", async () => {
     });
 
     alert("Profil gespeichert!");
-    window.location.href = "index.html"; // Nach dem Speichern zur Hauptseite
+    window.location.href = "index.html"; // Zur Hauptseite
 });
