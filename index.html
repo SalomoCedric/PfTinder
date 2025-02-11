@@ -3,34 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matching App</title>
-    <link href="style.css" rel="stylesheet">
+    <title>Social Matching Plattform</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <!-- Login Container -->
-    <div id="login-container">
-        <h2>Login</h2>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button id="login-btn">Login</button>
+<body class="bg-gray-100">
+
+    <!-- Login Button und Logout Button -->
+    <div class="fixed top-0 left-0 p-4">
+        <button id="login" class="bg-blue-500 text-white py-2 px-4 rounded">Login</button>
+        <button id="logout" class="bg-red-500 text-white py-2 px-4 rounded hidden">Logout</button>
     </div>
 
-    <!-- Profile Container -->
-    <div id="profile-container" class="hidden">
-        <h2>Profile</h2>
-        <button id="logout-btn">Logout</button>
-        <div id="profile-form">
-            <input type="text" id="name" placeholder="Name" required>
-            <input type="number" id="age" placeholder="Age" required>
-            <input type="text" id="class" placeholder="Class" required>
-            <input type="file" id="image" accept="image/*" required>
-            <button id="save-profile">Save Profile</button>
-        </div>
+    <!-- Profil Container -->
+    <div id="profile-container" class="container mx-auto p-4">
+        <!-- Hier wird später das Profil angezeigt -->
     </div>
 
-    <script type="module" src="firebase.js"></script>
-    <script type="module" src="auth.js"></script>
-    <script type="module" src="profile.js"></script>
-    <script type="module" src="swipe.js"></script>
+    <!-- Swipe Container -->
+    <div id="swipe-container" class="container mx-auto p-4">
+        <button id="swipe-left" class="bg-gray-400 text-white py-2 px-4 rounded">Pass</button>
+        <button id="swipe-right" class="bg-green-500 text-white py-2 px-4 rounded">Smash</button>
+    </div>
+
+    <!-- Skript nach dem Body -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"></script>
+
+    <script>
+        // Firebase Konfiguration
+        const firebaseConfig = {
+          apiKey: "AIzaSyBX_GqLCg1yOD1aPjxHZ1bQgdTQ5B7trv8",
+          authDomain: "pftinder-79946.firebaseapp.com",
+          projectId: "pftinder-79946",
+          storageBucket: "pftinder-79946.firebasestorage.app",
+          messagingSenderId: "165850597415",
+          appId: "1:165850597415:web:84e698173e2f983c4d6602"
+ };
+        // Firebase initialisieren
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // Login und Logout Event-Listener
+        document.getElementById("login").addEventListener("click", () => {
+            auth.signInWithEmailAndPassword("user@example.com", "password")
+                .then(() => {
+                    document.getElementById("login").classList.add("hidden");
+                    document.getElementById("logout").classList.remove("hidden");
+                })
+                .catch(error => {
+                    console.error("Login error: ", error.message);
+                });
+        });
+
+        document.getElementById("logout").addEventListener("click", () => {
+            auth.signOut().then(() => {
+                document.getElementById("logout").classList.add("hidden");
+                document.getElementById("login").classList.remove("hidden");
+            });
+        });
+
+        // Event für das Laden von Profilen und das Swipen
+        document.addEventListener("DOMContentLoaded", function () {
+            // Lade Profile
+            loadProfiles();
+
+            // Swipe-Buttons aktivieren
+            document.getElementById("swipe-right").addEventListener("click", () => {
+                alert("Du hast nach rechts geswiped!");
+            });
+
+            document.getElementById("swipe-left").addEventListener("click", () => {
+                alert("Du hast nach links geswiped!");
+            });
+        });
+
+        // Profil laden (Beispiel)
+        function loadProfiles() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            db.collection("users").get().then((snapshot) => {
+                const profileContainer = document.getElementById("profile-container");
+                profileContainer.innerHTML = "";
+                
+                snapshot.forEach(doc => {
+                    if (doc.id !== user.uid) {  // Zeige nicht das eigene Profil
+                        const profileData = doc.data();
+                        const profileHTML = `
+                            <div class="p-4 border rounded-lg">
+                                <img src="${profileData.imageUrl}" class="w-32 h-32 object-cover rounded-full">
+                                <h3 class="text-lg font-bold">${profileData.name}, ${profileData.age}</h3>
+                                <p>Klasse: ${profileData.class}</p>
+                            </div>
+                        `;
+                        profileContainer.innerHTML += profileHTML;
+                    }
+                });
+            }).catch(error => {
+                console.error("Fehler beim Laden der Profile: ", error.message);
+            });
+        }
+    </script>
 </body>
 </html>
