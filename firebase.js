@@ -1,10 +1,15 @@
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { firebaseConfig } from "./firebase-config.js";  // Firebase-Konfiguration importieren
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { firebaseConfig } from "./firebase-config.js"; // Firebase-Konfiguration importieren
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-const app = initializeApp(firebaseConfig);  // Firebase-App initialisieren
-const db = getFirestore(app); // Firestore initialisieren
-const storage = getStorage(app); // Storage initialisieren
+// Firebase-App initialisieren
+const app = initializeApp(firebaseConfig);
 
-export { db, storage };  // Firebase-Dienste exportieren
+// Firebase-Dienste initialisieren
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+export { auth, db, storage };  // Exportiere die Dienste für die Verwendung in anderen Dateien
