@@ -1,36 +1,44 @@
 // auth.js
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { firebaseConfig } from "./firebase-config.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { auth } from "./firebase.js"; // Firebase Auth importieren
 
-// Firebase initialisieren
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+// Anmelde- und Registrierungshandling
+const loginBtn = document.getElementById('login-btn');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
 
-// Einloggen
-document.getElementById("login-btn").addEventListener("click", () => {
-    const email = prompt("E-Mail eingeben:");
-    const password = prompt("Passwort eingeben:");
+loginBtn.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
 
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            alert("Erfolgreich eingeloggt!");
-            document.getElementById("login-container").classList.add("hidden");
-            document.getElementById("profile-container").classList.remove("hidden");
-            loadProfiles();
-        })
-        .catch((error) => {
-            console.error("Fehler beim Einloggen:", error.message);
-            alert("Fehler beim Einloggen. Bitte versuche es erneut.");
-        });
+    if (!email || !password) {
+        alert('Bitte alle Felder ausfüllen!');
+        return;
+    }
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert('Erfolgreich eingeloggt');
+    } catch (error) {
+        alert('Fehler beim Anmelden: ' + error.message);
+    }
 });
 
-// Prüfen, ob der Benutzer eingeloggt ist
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        console.log("Benutzer eingeloggt:", user);
+        // Benutzer ist eingeloggt, zeige das Profil
+        loadProfiles();
     } else {
-        console.log("Benutzer ist nicht eingeloggt.");
+        // Benutzer ist nicht eingeloggt, zeige Login-Formular
+        document.getElementById("login-container").classList.remove("hidden");
+        document.getElementById("profile-container").classList.add("hidden");
     }
+});
+
+// Logout
+const logoutBtn = document.getElementById('logout-btn');
+logoutBtn.addEventListener('click', async () => {
+    await signOut(auth);
+    alert("Erfolgreich abgemeldet");
+    location.reload();  // Seite neu laden, um das Login-Formular zu zeigen
 });
