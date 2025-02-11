@@ -1,46 +1,36 @@
 // auth.js
-import { auth } from "./firebase.js";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { firebaseConfig } from "./firebase-config.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
-// Anmeldung
-document.getElementById("login-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "index.html"; // Weiterleitung zur Hauptseite
-    } catch (error) {
-        alert("Fehler beim Anmelden: " + error.message);
-    }
+// Firebase initialisieren
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Einloggen
+document.getElementById("login-btn").addEventListener("click", () => {
+    const email = prompt("E-Mail eingeben:");
+    const password = prompt("Passwort eingeben:");
+
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            alert("Erfolgreich eingeloggt!");
+            document.getElementById("login-container").classList.add("hidden");
+            document.getElementById("profile-container").classList.remove("hidden");
+            loadProfiles();
+        })
+        .catch((error) => {
+            console.error("Fehler beim Einloggen:", error.message);
+            alert("Fehler beim Einloggen. Bitte versuche es erneut.");
+        });
 });
 
-// Registrierung
-document.getElementById("signup-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        window.location.href = "index.html"; // Weiterleitung zur Hauptseite
-    } catch (error) {
-        alert("Fehler bei der Registrierung: " + error.message);
-    }
-});
-
-// Abmeldung
-document.getElementById("logout").addEventListener("click", async () => {
-    await signOut(auth);
-    window.location.href = "login.html"; // Zur Login-Seite weiterleiten
-});
-
-// Überwache den Authentifizierungsstatus
+// Prüfen, ob der Benutzer eingeloggt ist
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // Der Benutzer ist eingeloggt
-        window.location.href = "index.html"; // Weiterleitung zur Hauptseite
+        console.log("Benutzer eingeloggt:", user);
     } else {
-        // Der Benutzer ist nicht eingeloggt
-        window.location.href = "login.html"; // Weiterleitung zur Login-Seite
+        console.log("Benutzer ist nicht eingeloggt.");
     }
 });
