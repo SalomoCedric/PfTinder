@@ -5,7 +5,7 @@ import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/f
 // Profile laden
 async function loadProfiles() {
     const user = auth.currentUser;
-    if (!user) return;
+    if (!user) return; // Wenn der User nicht eingeloggt ist, keine Profile laden
 
     const profilesRef = collection(db, "users");
     const querySnapshot = await getDocs(profilesRef);
