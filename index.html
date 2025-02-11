@@ -7,17 +7,30 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Dein Inhalt, z.B. ein Button für das Einloggen -->
+    <!-- Login Container -->
     <div id="login-container">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
         <button id="login-btn">Login</button>
     </div>
 
+    <!-- Profile Container -->
     <div id="profile-container" class="hidden">
-        <!-- Hier wird das Profil angezeigt -->
+        <h2>Profile</h2>
+        <button id="logout-btn">Logout</button>
+        <div id="profile-form">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="number" id="age" placeholder="Age" required>
+            <input type="text" id="class" placeholder="Class" required>
+            <input type="file" id="image" accept="image/*" required>
+            <button id="save-profile">Save Profile</button>
+        </div>
     </div>
 
-    <script type="module" src="auth.js"></script>
     <script type="module" src="firebase.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="profile.js"></script>
     <script type="module" src="swipe.js"></script>
 </body>
 </html>
