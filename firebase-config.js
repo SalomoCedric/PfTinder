@@ -15,4 +15,8 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-
+// Offline-Support für Firestore aktivieren
+db.enablePersistence()
+    .catch((err) => {
+        console.error("Offline-Support konnte nicht aktiviert werden:", err);
+    });
