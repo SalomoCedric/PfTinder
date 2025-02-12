@@ -1,31 +1,29 @@
-// Firebase Konfiguration
-// Firebase Konfiguration (ersetze mit deinen echten Daten)
-const firebaseConfig = {
-  apiKey: "AIzaSyBX_GqLCg1yOD1aPjxHZ1bQgdTQ5B7trv8",
-  authDomain: "pftinder-79946.firebaseapp.com",
-  projectId: "pftinder-79946",
-  storageBucket: "pftinder-79946.firebasestorage.app",
-  messagingSenderId: "165850597415",
-  appId: "1:165850597415:web:84e698173e2f983c4d6602"
-};
+function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-// Firebase initialisieren
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            console.log("Eingeloggt als:", userCredential.user);
+            window.location.href = "profile.html"; // Weiterleitung nach Login
+        })
+        .catch((error) => {
+            console.error("Login-Fehler:", error);
+            alert("Fehler beim Login: " + error.message);
+        });
+}
 
-// Login-Funktion
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+function register() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-    try {
-        await auth.signInWithEmailAndPassword(email, password);
-        window.location.href = 'profile.html'; // Nach Login auf die Profilseite
-    } catch (error) {
-        alert(error.message);
-    }
-});
+    auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            console.log("Registriert als:", userCredential.user);
+            window.location.href = "profile.html"; // Weiterleitung nach Registrierung
+        })
+        .catch((error) => {
+            console.error("Registrierungs-Fehler:", error);
+            alert("Fehler bei der Registrierung: " + error.message);
+        });
+}
