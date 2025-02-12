@@ -1,4 +1,4 @@
-// firebase-config.js
+// Firebase-Konfiguration
 const firebaseConfig = {
   apiKey: "AIzaSyBX_GqLCg1yOD1aPjxHZ1bQgdTQ5B7trv8",
   authDomain: "pftinder-79946.firebaseapp.com",
@@ -7,7 +7,12 @@ const firebaseConfig = {
   messagingSenderId: "165850597415",
   appId: "1:165850597415:web:84e698173e2f983c4d6602"
 };
+// Firebase initialisieren
+firebase.initializeApp(firebaseConfig);
 
-export { firebaseConfig };
+// Auth, Firestore und Storage initialisieren
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
 
 
